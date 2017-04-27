@@ -7,6 +7,8 @@ from datetime import datetime
 
 def preprocess_input (DATE, CRS_DEP_TIME, UNIQUE_CARRIER, FL_NUM, ORIGIN_CITY_NAME, DEST_CITY_NAME, filename_metadata):
 	# format user input
+	CRS_DEP_TIME = int(CRS_DEP_TIME)
+	FL_NUM = int(FL_NUM)
 	DepHr = CRS_DEP_TIME//100
 	date_obj = datetime.strptime(DATE,'%m/%d/%y')
 	MONTH = date_obj.month
@@ -34,13 +36,12 @@ def make_prediction (df_input, filename_pickle):
 	# print (model.classes_)
 	predictions = model.predict_proba(df_input)
 	# print (predictions)
-	print ('The probability of delay is {:.0%}'.format(predictions[0][1]))
+	return ('The probability of delay is {:.0%}'.format(predictions[0][1]))
 
 def main():
 	# Preprocess raw user input and make prediction
 	df_input = preprocess_input(DATE, CRS_DEP_TIME, UNIQUE_CARRIER, FL_NUM, ORIGIN_CITY_NAME, DEST_CITY_NAME, filename_metadata)
 	make_prediction(df_input, filename_pickle)
-
 
 # User Input Variables
 DATE = '06/26/17'
@@ -51,7 +52,7 @@ ORIGIN_CITY_NAME = 'San Francisco, CA'
 DEST_CITY_NAME = 'Orlando, FL'
 
 # Files Location
-filename_path = '/Users/dongchen/Google_Drive/sptp/project/data_science/'
+filename_path = ''
 filename_metadata = filename_path+'data/metadata.csv'
 filename_pickle = filename_path+'model/final_model.pkl'
 
